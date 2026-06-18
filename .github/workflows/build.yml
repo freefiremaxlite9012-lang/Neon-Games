@@ -1,3 +1,4 @@
+cat > .github/workflows/build.yml << 'EOF'
 name: Build APK
 on: push
 jobs:
@@ -9,13 +10,13 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
       - name: Create .env file
         run: echo "GEMINI_API_KEY=test123" > .env
       - name: Build Debug APK
-        run: |
-          chmod +x ./gradlew || true
-          ./gradlew assembleDebug
+        run: gradle assembleDebug
       - uses: actions/upload-artifact@v4
         with:
           name: app-debug
           path: app/build/outputs/apk/debug/app-debug.apk
+EOF
